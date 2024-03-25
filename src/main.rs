@@ -18,7 +18,7 @@ use axum::{
 #[tokio::main]
 
 async fn main() {
-        // at the top of main
+    // at the top of main
     let _guard = sentry::init((
         std::env::var("SENTRY_DSN").expect("$SENTRY_DSN must be set"),
         sentry::ClientOptions {
@@ -38,7 +38,9 @@ async fn main() {
         .init();
 
     // configure webserver
-    let app = Router::new().route("/", get(root_get));
+    let app = Router::new()
+        .route("/", get(root_get))
+        .route("/panic", get(|| async { panic!("This is a panic")}));
 
     let addr = "0.0.0.0:8080".parse().unwrap();
     info!("Listening on {addr}");
