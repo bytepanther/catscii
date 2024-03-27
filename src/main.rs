@@ -119,13 +119,7 @@ use opentelemetry::{
 async fn get_cat_ascii_art(client: &reqwest::Client) -> color_eyre::Result<String> {
     let tracer = global::tracer("");
 
-    let image_url = get_cat_image_url(client)
-        .with_context(Context::current_with_span(
-            tracer.start("get_cat_image_url"),
-        ))
-        .await?;
-
-    let image_bytes = download_file(client, &image_url)
+    let image_bytes = download_file(client, "https://cataas.com/cat")
         .with_context(Context::current_with_span(tracer.start("download_file")))
         .await?;
 
